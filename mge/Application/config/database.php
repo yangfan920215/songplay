@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['mge'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.43.128',
+	'hostname' => '172.19.0.12',
 	'username' => 'root',
-	'password' => 'fengyang920213',
+	'password' => 'root54321',
 	'database' => 'mge',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -97,9 +97,9 @@ $db['mge'] = array(
 
 $db['baseManage'] = array(
 		'dsn'	=> '',
-		'hostname' => '192.168.43.128',
+		'hostname' => '172.19.0.12',
 		'username' => 'root',
-		'password' => 'fengyang920213',
+		'password' => 'root54321',
 		'database' => 'manage',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
@@ -119,9 +119,9 @@ $db['baseManage'] = array(
 
 $db['baseConfig'] = array(
 		'dsn'	=> '',
-		'hostname' => '10.66.115.103',
+		'hostname' => '172.19.0.12',
 		'username' => 'root',
-		'password' => '9lMtjzOvGJ',
+		'password' => 'root54321',
 		'database' => 'config',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
