@@ -71,7 +71,8 @@ class PropsBuyRecord extends CI_Controller{
 		$gasapp = gasapp::init();
 		
 		$uid = getUid($userType, $key, $gasapp, $this->config->item('userType'));
-		
+
+        $uid = $uid == '' ? 0 : $uid;
 		$data = $this->dbapp->manage_sp_charge_s($uid, $order_id, $sDate, $eDate, $props_id, $_SESSION['authId']);
 		
 		convGname($data, $this->config->item('gameList'), 'game_id');

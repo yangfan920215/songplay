@@ -686,7 +686,7 @@ class DbApp extends DbBase{
 		$spName = 'sp_bag_s_use';
 		$dbName = 'manage';
 		$param = array(
-			$uid,$sDate,$eDate,$props,'',$_uid
+			$uid,$sDate,$eDate,$props,$_uid
 		);
 		return $this->execSp($spName, $param, $dbName);
 	}

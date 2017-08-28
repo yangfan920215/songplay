@@ -66,7 +66,8 @@ class PropsUseRecord extends CI_Controller{
 		$gasapp = gasapp::init();
 		
 		$uid = getUid($userType, $key, $gasapp, $this->config->item('userType'));
-		
+
+        $uid = $uid == '' ? 0 : $uid;
 		$data = $this->dbapp->manage_sp_bag_s_use($uid,$sDate,$eDate,$props_id, $_SESSION['authId']);
 
 		if(isset($data[0]['status'])){

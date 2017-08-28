@@ -54,7 +54,8 @@ class Prop extends CI_Controller{
 		$pid = isset($_REQUEST['extra_search'][0]['pid']) ? $_REQUEST['extra_search'][0]['pid'] : 10006;
 		$sDate = isset($_REQUEST['extra_search'][1]['sDate']) ? $_REQUEST['extra_search'][1]['sDate'] : date('Y-m-d', strtotime('-8 day'));
 		$eDate = isset($_REQUEST['extra_search'][2]['eDate']) ? $_REQUEST['extra_search'][2]['eDate'] : date('Y-m-d', strtotime('-1 day'));
-		
+
+        $pid = $pid == '' ? 0 : '';
 		$result = $this->dbapp->mge_sp_prop_date_s($pid, $sDate, $eDate);
 		
 		// 修改重复的字段名

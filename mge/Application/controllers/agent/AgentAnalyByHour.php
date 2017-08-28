@@ -19,7 +19,7 @@ class AgentAnalyByHour extends CI_Controller{
 	
 	public function ajaxTable(){
 		$date = get_extra_v1('sDate');
-		$cid = get_extra_v1('cid');
+		$cid = get_extra_v1('cid') == '' ? 0 : get_extra_v1('cid');
 		
 		$data = $this->dbapp->manage_sp_report_hour_client($cid, $date);
 		

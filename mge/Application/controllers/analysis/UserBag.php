@@ -51,7 +51,9 @@ class UserBag extends CI_Controller{
 		$gid = get_extra('gid');
 		$pid = get_extra('pid');
 		$ext = get_extra('ext');
-		
+
+        $pid = $pid == '' ? 0 : $pid;
+        $ext = $ext == '' ? 0 : $ext;
 		$reslet = $this->dbapp->manage_sp_report_usersBag($gid, $pid, $ext);
 		
 		$pidList = $this->dbapp->config_sp_prop_s_all();

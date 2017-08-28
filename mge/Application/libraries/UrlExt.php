@@ -15,6 +15,7 @@ class UrlExt{
 	
 	public function __construct(){
 		$this->CI =& get_instance();
+
 		switch (count($this->CI->uri->segments)) {
 			case 0:
 				$this->file = '';
@@ -37,6 +38,8 @@ class UrlExt{
 				$this->method = $this->CI->uri->segments[4];
 				break;
 			default:
+                var_dump(count($this->CI->uri->segments));
+                exit;
 				execExit('urlext:不合法的url');
 				break;
 		}

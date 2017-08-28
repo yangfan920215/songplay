@@ -119,8 +119,8 @@ $config['upcid'] = 217;
  */
 $config_db_match = array(
 	0=>array(
-		'manage'=>'manage',
-		'config'=>'config',
+		'manage'=>'baseManage',
+		'config'=>'baseConfig',
 	),
 	1=>array(
 		'manage'=>'manage_91',
@@ -134,7 +134,12 @@ $config_db_match = array(
 
 // 用户独立DB链接配置
 $config['conn_db'] = array(
-	// 默认
+    '0'=>array(
+        'config'=>'baseConfig',
+        'manage'=>'baseManage',
+        'bl'=>'0.8',
+    ),
+    // 默认
 	'1'=>array(
 		'config'=>'baseConfig',
 		'manage'=>'baseManage',

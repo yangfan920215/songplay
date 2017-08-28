@@ -95,6 +95,8 @@ class ManageLimit extends CI_Controller
 
         }
 
+
+        $ajaxData = isset($ajaxData) ? $ajaxData : [];
         echo json_encode(array('data'=>$ajaxData), true);
     }
 

@@ -17,7 +17,9 @@ class RoleManage extends CI_Controller{
 		$thList = array('选择', '角色名', '角色状态', '创建时间', '最后更新时间');
 		
 		$colList = array('name', 'status', 'create_time', 'update_time');
-		
+
+        $role_data = [];
+
 		echo $this->views->setRow(
 				array(
 						array(
@@ -106,7 +108,9 @@ class RoleManage extends CI_Controller{
 		), false)->done(); */
 	}
 	
-	public function ajaxData(){
+	public function ajaxTable(){
+        echo json_encode(array('data'=>[]));
+        exit;
 		$role = exec_sp_sql('sp_get_system_role', array(), $this->db);
 		convDT($role);
 		echo json_encode(array('data'=>$role));
