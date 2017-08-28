@@ -1,0 +1,159 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->">
+	<div class="row" id="<!--{search_tab}-->">
+		<div class="col-sm-2">
+			<select name="usertype" class="form-control">
+				<!--{userType}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/userType}-->
+			</select>
+		</div>
+	
+		 <div class="col-sm-2">
+		 	<input name="userkey" class="form-control" placeholder="用户标识" type="text">	
+         </div>
+	
+		<div class="col-sm-2">
+			<select name="gid" class="form-control">
+				<!--{gameList}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/gameList}-->
+			</select>
+		</div>
+		
+		<div class="col-sm-2">
+			<select name="goldType" class="form-control">
+				<!--{goldType}-->
+				<option value="<!--{id}-->"><!--{gname}--></option>
+				<!--{/goldType}-->
+			</select>
+		</div>
+		
+		 <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1_<!--{tab}-->" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->" name="sDate">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="dtp_input1_<!--{tab}-->" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2_<!--{tab}-->" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->" name="eDate">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="dtp_input2_<!--{tab}-->" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_date').datetimepicker({
+	                language:  'zh-CN',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0,
+		       		
+	           });
+			</script>
+			
+
+	</div>
+	
+	<br/>
+	
+	<div class="row">
+		<div class="col-sm-2">
+			<button onclick="table_reload('<!--{tableId}-->', '<!--{tab}-->')" type="button" class="btn btn-outline btn-default">点击查询</button>
+		</div>
+	</div>
+		
+	<br/>	
+		
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table id="<!--{tableId}-->"
+							class="display table table-striped table-bordered table-hover dataTable no-footer">
+							<thead>
+								<tr>
+									<th>送礼者</th>
+									<th>收礼者ID</th>
+									<th>赠送道具名</th>
+									<th>赠送数量</th>
+									<th>收礼者是否接收</th>
+									<th>日期</th>
+									<th>时间</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var <!--{tableId}--> = $("#<!--{tableId}-->")
+					.DataTable(
+							{
+								"dom" : 'lfr<"a"T>tip',
+								"oTableTools" : {
+									"sSwfPath" : "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "数据导出"
+									} ]
+								},
+								"order" : [ [ 0, "asc" ] ],
+								"displayLength" : 25,
+								ajax : {
+									'url' : "<!--{ajaxTable}-->",
+									'type' : 'POST',
+									'data' : function(d) {
+										d.extra_search = [ {
+											'req' : getReqJson('<!--{search_tab}-->'),
+										} ];
+
+									},
+								},
+								"language" : {
+									"lengthMenu" : "每页 _MENU_ 条记录",
+									"zeroRecords" : "没有找到记录",
+									"info" : "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+									"infoEmpty" : "无记录",
+									"infoFiltered" : "(从 _MAX_ 条记录过滤)",
+								},
+								columns : [{
+									"data" : "sender",
+									"defaultContent" : "NULL"
+								}, {
+									"data" : "receiver",
+									"defaultContent" : "NULL"
+								}, {
+									"data" : "name",
+									"defaultContent" : "NULL"
+								}, {
+									"data" : "count",
+									"defaultContent" : "NULL"
+								},{
+									"data" : "receive",
+									"defaultContent" : "NULL"
+								}, {
+									"data" : "post_date",
+									"defaultContent" : "NULL"
+								}, {
+									"data" : "post_time",
+									"defaultContent" : "NULL"
+								}],
+								select : {
+									style : 'os',
+									selector : 'td:first-child'
+								},
+							});
+		</script>
+	</div>
+</div>

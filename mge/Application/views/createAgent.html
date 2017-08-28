@@ -1,0 +1,50 @@
+<script>
+	$(function(){
+		$('#send_button_<!--{tab}-->').bind("click", function(){
+			var data = new Object();
+			var reqData = new Object();
+			var req = getReqJson('<!--{tab}-->');
+			
+			reqData['data'] = new Object();
+			reqData['data']['req'] = req;
+			
+			doAjax('<!--{ajaxMorris}-->', reqData, 'callback_<!--{tab}-->');
+		});
+	});
+	
+	function callback_<!--{tab}-->(data){
+		alert(data);
+	}
+	
+	$(function(){
+		selectCheck('agent_type_<!--{tab}-->', 3, 'creatInput');
+	});
+	
+	function creatInput(tab){
+		if (tab == 0) {
+			$('#agent_type_div_<!--{tab}-->').after('<div id="agent_father_div_<!--{tab}-->"><br/><div class="row"><div class="col-sm-3"><input class="form-control" placeholder="所属二级渠道" name="father_agent_id" type="text"></div></div></div>')
+		} else {
+			if (hasDom('agent_father_div_<!--{tab}-->')) {
+				$('#agent_father_div_<!--{tab}-->').remove();
+			}
+			
+		}
+	}
+	
+	function hasDom(id){
+		obj = document.getElementById(id);
+		return obj != null ? true : false;
+	}
+	
+	function selectCheck(id, val, fun){
+		var id = $('#' + id);
+		id.change(function(){
+			var checkVal = id.val();
+			if (checkVal >= val) {
+				eval(fun + "(0)");
+			} else {
+				eval(fun + "(1)");
+			}
+		});
+	}
+</script>

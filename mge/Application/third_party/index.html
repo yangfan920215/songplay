@@ -1,0 +1,207 @@
+<div class="tab-pane fade active in" id="analysis_index" style="margin-top: 10px;">
+	<div class="row">
+		<div class="col-sm-2">
+			<select id="analysis_gameid" name="gameId" class="form-control">
+				<!--{gameList}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/gameList}-->
+			</select>
+		</div>
+		
+		 <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="analysis_dtp_input1" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="analysis_dtp_input1" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="analysis_dtp_input2" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="analysis_dtp_input2" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_date').datetimepicker({
+	                language:  'es',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0
+	           });
+			</script>
+		<div class="col-sm-2">
+			<button onclick="get_data_analysis()" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+	</div>
+	
+	<br/>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="analysis_index_div"
+						class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table
+							class="table table-striped table-bordered table-hover dataTable no-footer"
+							id="analysis_index_table" role="grid"
+							aria-describedby="analysis_index_table_info">
+							<thead>
+								<tr>
+									<th>日期</th>
+									<th>日登陆账号数</th>
+									<th>日注册账号数</th>
+									<th>日收入(元)</th>
+									<th>日付费账号数</th>
+									<th>账号付费渗透率(%)</th>
+									<th>账号arppu值(元)</th>
+									<th>账号1局转化率(%)</th>
+									<th>账号5局转化率(%)</th>
+									<th>账号平均游戏时长(分)</th>
+									<th>最高在线人数</th>
+									<th>最高在线时间点</th>
+									<th>新增付费总额</th>
+									<th>新增付费账号数</th>
+									<th>新增账号付费渗透率(%)</th>
+									<th>新增账号arppu值(元)</th>
+									<th>新增账号1局转化(%)</th>
+									<th>新增账号5局转化(%)</th>
+									<th>新增账号平均游戏时长(分)</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// $(document).ready(function() {
+/* 		var editor;
+		
+		editor = new $.fn.dataTable.Editor( {
+			ajax :'',
+			table: "#analysis_index_table",
+		});
+		
+		console.info('x'); */
+		
+		var table = $('#analysis_index_table').DataTable({
+			 "sDom": 'T<"clear">lfrtip',
+			 "oTableTools": {
+			    "sSwfPath": "./Application/third_party/copy_csv_xls_pdf.swf",
+			    "aButtons": [ "xls" ],
+			 },
+			ajax : {
+				'url':'http://mge.songplay.cn/index.php/analysis/getData',
+				'type':'POST',
+				'data':function(d){
+					d.extra_search =[
+						{'gameId':$('#analysis_gameid').val()},
+						{'sDate':$('#analysis_dtp_input1').val()},
+						{'eDate':$('#analysis_dtp_input2').val()}
+					];
+					
+				},
+			},
+			columns : [ 
+			{
+				data : "post_date",
+			}, {
+				data : "quantity",
+			}, {
+				data : "quantity_register",
+			}, {
+				data : "amounts",
+			}, {
+				data : "quantity_charge",
+			}, {
+				data : "infilter",
+			}, {
+				data : "arppu",
+			}, {
+				data : "conv1",
+			}, {
+				data : "conv5",
+			}, {
+				data : "avg_time",
+			}, {
+				data : "max_online",
+			}, {
+				data : "max_time",
+			},{
+				data : "amounts_charge1",
+				defaultContent : 'NULL',
+			}, {
+				data : "quantity_charge1",
+				defaultContent : 'NULL',
+			}, {
+				data : "infilter_charge1",
+				defaultContent : 'NULL',
+			}, {
+				data : "arppu_charge1",
+				defaultContent : 'NULL',
+			}, {
+				data : "conv1_conv1",
+			}, {
+				data : "conv5_conv1",
+			}, {
+				data : "avg_time_avgonl1",
+			},],
+			
+	        select: {
+	            style:    'os',
+	            selector: 'td:first-child'
+	        },
+		});
+		
+
+		
+	//});
+	
+	function reload_analysis(){
+
+		var url = "<!--{sroot}-->index.php/Analysis/reload?gid="+gameid+"&sDate="+sDate+"&eDate="+eDate;
+		
+		var table = $('#analysis_index_table').DataTable( {
+			ajax: ""
+		} );
+		
+		table.ajax.url(url).load();
+		
+	/* 	$.ajax({
+    		type:"POST",
+    		url:"<!--{sroot}-->index.php/Analysis/reload",
+    		data:{gid:$('#analysis_gameid').val(), sDate:$('#analysis_dtp_input1').val(), eDate:$('#analysis_dtp_input1').val()},
+    		dataType:"text",
+    		success:function(data){
+    			var table = $('#analysis_index_table').DataTable( {
+    			    ajax: "http://mge.songplay.cn/index.php/analysis/getData"
+    			} );
+    			console.info(data);
+    			table.ajax.url(data).load();
+	    	}
+    		
+    	}); */
+	}
+	
+	function get_data_analysis(){
+		//var table = $('#analysis_index_table').DataTable();
+		table.ajax.reload();
+	}
+	
+
+</script>

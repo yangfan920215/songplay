@@ -1,0 +1,317 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row" id="<!--{search_row_id}-->">
+		<div class="col-sm-2">
+			<select id="<!--{gameid}-->" name="gameId" class="form-control">
+			</select>
+		</div>
+		
+		<div class="col-sm-2">
+			<select id="cascade_<!--{tab}-->" name="cascade" class="form-control">
+			</select>			
+		</div>
+		
+		 <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="<!--{sDateId}-->" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->" name="sDate">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="<!--{sDateId}-->" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="<!--{eDateId}-->" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->" name="eDate">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="<!--{eDateId}-->" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_date').datetimepicker({
+	                language:  'zh-CN',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0
+	           });
+			</script>
+		<div class="col-sm-2">
+			<button id="<!--{reloadButton}-->" onclick="<!--{ajaxReload}-->" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+	</div>
+	
+	<br/>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="onlinegame_index_div"
+						class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table
+							class="table table-striped table-bordered table-hover dataTable no-footer"
+							id="<!--{tableId}-->" role="grid">
+							<thead>
+								<tr>
+									<th>总产出</th>
+									<th id="total_send_<!--{tab}-->"></th>
+									<th>总消耗</th>
+									<th id="total_sward_<!--{tab}-->"></th>
+									<th>总报名</th>
+									<th id="total_sign_<!--{tab}-->"></th>
+									<th>总产出</th>
+									<th id="total_attend_<!--{tab}-->"></th>
+								</tr>
+								<tr>
+									<th></th>
+									<th>房间名</th>
+									<th>日期</th>
+									<th>开始时间</th>
+									<th>结束时间</th>
+									<th>比赛耗时</th>
+									<th>报名人数</th>
+									<th>参赛人数</th>
+									<th>实际参赛(玩家)</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	cascadeSelect('<!--{gameid}-->', 'cascade_<!--{tab}-->', '<!--{cascade}-->');
+
+	$('#cascade_<!--{tab}-->').val(-1);
+	
+	req = getReqJson('<!--{search_row_id}-->');
+	
+	<!--{tableId}--> = $('#<!--{tableId}-->').DataTable({
+		 "sDom": 'lfr<"a"T>tip',
+		 "oTableTools": {
+			// 该目录必须是以ftp形式访问的目录
+		    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+		    "aButtons": [ 
+		                  {
+		                	  "sExtends":"xls",
+		                	  "sButtonText":"数据导出"
+		                  }
+		                ],
+		 },
+		"order":[[0, "desc"]],
+		"displayLength": 25,
+		 ajax : {
+			'url':'<!--{ajaxData}-->',
+			'type':'POST',
+			'data':function(d){
+				d.extra_search =[
+					{'req':req},
+				];
+				
+			},
+		},
+		columns : [{
+	            "class":          'details-control a',
+	            "orderable":      false,
+	            "data":           null,
+	            "defaultContent": ''
+	        },{
+				"data":"room_name",
+				"defaultContent":'NULL',
+			},{
+				"data":"post_date",
+				"defaultContent":'NULL',
+			},{
+				"data":"start_time",
+				"defaultContent":'NULL',
+			},{
+				"data":"end_time",
+				"defaultContent":'NULL',
+			},{
+				"data":"mid_time",
+				"defaultContent":'NULL',
+			},{
+	            "class":'details-control b',
+				"data":"apply",
+				"defaultContent":'NULL',
+			},{
+				"data":"quantity1",
+				"defaultContent":'NULL',
+			},{
+	            "class":          'details-control c',
+				"data":"quantity2",
+				"defaultContent":'NULL',
+			},
+		],
+		
+		language:{
+	        "lengthMenu": "每页显示_MENU_条记录",
+	        "zeroRecords": "没有找到记录",
+	        "infoEmpty": "无记录",
+	        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+	        "paginate": {
+	            "previous": "上一页",
+	            "next": "下一页"
+	        },
+	        "sInfo": "_END_ /共 _TOTAL_ 条数据",
+	    },
+	    
+	});
+	
+	function format ( d ) {
+		var award = JSON.parse(d.award);
+		
+		var htm = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;"><thead><tr><th>排名</th><th>uid</th></tr></thead>';
+		
+		$.each(award, function(key, val){
+			var style = '<td>' + val.uid;
+			
+			if (val.rebot == 0) {
+				var style = '<td style="color:red;">' + val.uid;
+			}
+
+			key = key + 1;
+			
+			htm += '<tr><td>' + key + '</td>' + style + '</td></tr>';
+		});
+		
+		htm += '</table>';
+	    return htm;
+	}
+	
+	function formatb ( d ) {
+		var userbm = JSON.parse(d.userbm);
+		
+		var htm = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;"><thead><tr><th>昵称</th><th>guid</th><th>报名费</th></tr></thead>';
+		
+		$.each(userbm, function(key, val){
+			console.info(val);
+			htm += '<tr><td>' + val.uname + '</td><td>' + val.guid + '</td><td>' + val.pname + '</td></tr>';
+		});
+		
+		htm += '</table>';
+	    return htm;
+	}
+	
+	$('#<!--{tableId}-->').on('click', 'td.a', function () {
+        var tr = $(this).closest('tr');
+        var row = <!--{tableId}-->.row( tr );
+        
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+	
+	$('#<!--{tableId}-->').on('click', 'td.b', function () {
+        var tr = $(this).closest('tr');
+        var row = <!--{tableId}-->.row( tr );
+        
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( formatb(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+	
+	$('#<!--{tableId}-->').on('click', 'td.c', function () {
+        var tr = $(this).closest('tr');
+        var row = <!--{tableId}-->.row( tr );
+        
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( formatc(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+	
+	function formatc ( d ) {
+		var userbm = JSON.parse(d.realParameter);
+		
+		var htm = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;"><thead><tr><th>昵称</th><th>guid</th></tr></thead>';
+		
+		$.each(userbm, function(key, val){
+			console.info(val);
+			htm += '<tr><td>' + val.uname + '</td><td>' + val.guid + '</td></tr>';
+		});
+		
+		htm += '</table>';
+	    return htm;
+	}
+	
+	function <!--{ajaxReload}-->{
+		req = getReqJson('<!--{search_row_id}-->');
+		<!--{tableId}-->.ajax.reload();
+		setGold();
+    };
+    
+    $(function(){
+    	setGold();
+    })
+    
+    function setGold(){
+    	req = getReqJson('<!--{search_row_id}-->');
+    	$.ajax({
+    		type:"POST",
+    		url:'<!--{tab_fun}-->',
+    		data:{"reqData":req},
+    		dataType:"json",
+    		// async:false,
+    		// cache : false,
+    		success:function(data){
+    			if (data[0].rewards == null) {
+    				data[0].rewards = 0;
+				}
+    			
+    			if (data[0].recovery == null) {
+    				data[0].recovery = 0;
+				}
+    			
+    			$('#total_send_<!--{tab}-->').html(data[0].rewards + '(增购消耗:' + data[0].addbuy +'-重购消耗:' + data[0].rebuy + ')');
+    			$('#total_sward_<!--{tab}-->').html(data[0].recovery);
+    			
+    			// 报名人数
+    			var sum_sign = 0;
+    			// 实际参数玩家人数
+    			var sum_attend = 0;
+    			
+    			$.each(<!--{tableId}-->.data(), function(key, val){
+    				sum_sign += parseInt(val.apply);
+    				sum_attend += parseInt(val.quantity2);
+    				
+    				
+    			});
+    			
+    			$('#total_sign_<!--{tab}-->').html(sum_sign);
+    			$('#total_attend_<!--{tab}-->').html(sum_attend);
+    		}
+    	});
+    }
+    
+</script>

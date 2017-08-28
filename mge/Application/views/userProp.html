@@ -1,0 +1,331 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row" id="<!--{search_row_id}-->">
+		<div class="col-sm-2">
+			<select id="<!--{gameid}-->" name="gameId" class="form-control">
+				<!--{gameList}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/gameList}-->
+			</select>
+		</div>
+	
+		<div class="col-sm-2">
+			<select id="usertype_<!--{tab}-->" name="usertype" class="form-control">
+				<!--{userType}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/userType}-->
+			</select>
+		</div>
+		
+		 <div class="col-sm-2">
+		 	<input id="userkey_<!--{tab}-->" name="userkey" class="form-control" placeholder="请输入..." type="text">	
+         </div>
+         
+		<div class="col-sm-2">
+			<button onclick="<!--{ajaxReload}-->" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+			<div class="col-sm-2">
+				<button class="btn btn-outline btn-default" data-toggle="modal" data-target="#<!--{add_model_id}-->">补发道具/增减金币</button>
+			</div>
+			
+			<div class="col-sm-2">
+				<button class="btn btn-outline btn-default" data-toggle="modal" data-target="#<!--{edit_model_id}-->">修改道具个数</button>
+			</div>
+			
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+				<div class="dataTable_wrapper">
+					<div id="<!--{divId}-->"
+						class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table id="<!--{tableId}-->" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid">
+							<thead>
+								<tr>
+									<th>选择</th>
+									<th>道具(商品)ID</th>
+									<th>道具(商品)名称</th>
+									<th>数量</th>
+									<th>到期时间</th>
+								</tr>
+							</thead>
+					</table>
+					</div>
+		</div>
+	</div>
+	</div>
+	
+<div class="modal fade" id="<!--{add_model_id}-->" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">补发道具</h4>
+            </div>
+            <div id="modal_body_<!--{tab}-->" class="modal-body">
+                <div class="form-group">
+					<select id="gameId_2_<!--{tab}-->" name="gameId" class="form-control">
+						<!--{gameList}-->
+						<option value="<!--{id}-->"><!--{name}--></option>
+						<!--{/gameList}-->
+					</select>
+            	</div>
+            
+            	<div class="form-group">
+	            	<select id="userType_2_<!--{tab}-->" class="form-control" name="usertype">
+						<!--{userType}-->
+						<option value="<!--{id}-->"><!--{name}--></option>
+						<!--{/userType}-->
+	                </select>
+                </div>
+
+				<div class="form-group">
+                	<label>用户标识：(一次最多不能超过50个，且用,号分割)</label>
+                	<textarea id="uids_<!--{tab}-->" class="form-control" rows="3" name="uids"></textarea>
+				</div>
+            	
+            	<div class="form-group">
+	            	<select id="propType" class="form-control" name="proptype">
+	                </select>
+            	</div>
+            	
+            	<div class="form-group">
+            		<select id="props" class="form-control" name="propid">
+	                </select>
+            	</div>
+            	
+            	<div class="form-group">
+            		<input class="form-control" placeholder="道具数目" name="propNum" type="text">
+            	</div>
+            	<div class="form-group">
+					<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="expi_<!--{tab}-->" data-link-format="yyyy-mm-dd">
+		                <input class="form-control" size="16" type="text" placeholder="过期时间" name="expi_time">
+		                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						<input type="hidden" id="analysis_dtp_input2"  />
+		            </div>
+	            </div>
+		        <script type="text/javascript">
+		           $('.form_date').datetimepicker({
+		                language:  'zh-CN',
+		                weekStart: 1,
+		                todayBtn:  1,
+			       		autoclose: 1,
+			       		todayHighlight: 1,
+			       		startView: 2,
+			       		minView: 2,
+			       		forceParse: 0,
+		           });
+				</script>
+            	
+	           <div class="form-group">
+		           	<select class="form-control" id="type_id_<!--{tab}-->" name="type_id">
+						<!--{getPropType}-->
+						<option value="<!--{id}-->"><!--{name}--></option>
+						<!--{/getPropType}-->
+		            </select>
+	           </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="model" onclick="addModel_<!--{tab}-->('<!--{add_model_id}-->', '<!--{tableId}-->', '<!--{addModel}-->')" >确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>	
+	
+	
+	<div class="modal fade" id="<!--{edit_model_id}-->" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">编辑道具个数</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+            		<input class="form-control" placeholder="道具数目" name="propNum" type="text">
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="model" onclick="edit('<!--{ajaxMorris}-->', '<!--{edit_model_id}-->', '<!--{tableId}-->')">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>	
+	<script>
+	i =1;
+	<!--{tableId}--> = $('#<!--{tableId}-->').DataTable({
+		 "sDom": 'lfr<"a"T>tip',
+		 "oTableTools": {
+			// 该目录必须是以ftp形式访问的目录
+		    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+		    "aButtons": [ 
+		                  {
+		                	  "sExtends":"xls",
+		                	  "sButtonText":"数据导出"
+		                  }
+		                ],
+		 },
+		"order":[[0, "desc"]],
+		"displayLength": 25,
+		 ajax : {
+			'url':'<!--{ajaxData}-->',
+			'type':'POST',
+			'data':function(d){
+				d.extra_search =[
+					{'req':getReqJson('<!--{search_row_id}-->')},
+				];
+				
+			},
+		},
+		columns : [
+			{
+			    "data": null,
+			    defaultContent: '',
+			    className: 'select-checkbox',
+			    orderable: false
+			},{
+				"data":"pid",
+				"defaultContent":'NULL',
+			},{
+				"data":"goods_name",
+				"defaultContent":'NULL',
+			},{
+				"data":"count",
+				"defaultContent":'NULL',
+			},{
+				"data":"expi",
+				"defaultContent":'NULL',
+			},
+		],
+		
+		language:{
+            "lengthMenu": "每页显示_MENU_条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+	    },
+	    
+	    select: {
+	        style:    'os',
+	        selector: 'td:first-child'
+	    },
+	});
+	
+	function addModel_<!--{tab}-->(modId, tableid, url){
+		i++;
+		if(i == 2){
+			$('#loading').show();
+			var json = addModel(modId, tableid, url);
+			i = 0;
+		}else{
+ 			alert('请不要点击过快,以免重复发放');
+		}
+		
+		setTimeout(function(){
+			$('#loading').hide();
+		}, 3000);
+	}
+	
+	
+	function edit_func_<!--{tab}-->(){
+ 		var aData = <!--{tableId}-->.rows('.selected').data();
+		var pList = new Array();
+		var data = new Object();
+		var reqData = new Object();
+		var isCheck = true;
+		
+		aData.each(function(key, value){
+			isCheck = false;
+			pList.push(key);
+		});
+		
+		
+		if (isCheck) {
+			alert('没有道具被选中');
+			return;
+		}
+		
+		var req = getReqJson('<!--{edit_model_id}-->');
+		
+		var pList = JSON.stringify(pList);
+		
+		reqData['data'] = new Object();
+		reqData['data']['req'] = req;
+		reqData['data']['pList'] = pList;
+
+		edit('<!--{ajaxMorris}-->', '<!--{edit_model_id}-->', '<!--{tableId}-->')
+	}
+	
+	/**
+	 * 表格数据更新
+	 * @param tableId
+	 */
+	function <!--{ajaxReload}-->{
+		// <!--{gameid}-->usertype_<!--{tab}-->
+		
+		req = getReqJson('<!--{search_row_id}-->');
+		
+		var val = $('#userkey_<!--{tab}-->').val();
+		$('#uids_<!--{tab}-->').html(val);
+		
+		var defGameId= $('#<!--{gameid}-->').val();
+		$('#gameId_2_<!--{tab}-->').find("option[value='" + defGameId + "']").attr("selected",true);
+		
+		var defUserType = $('#usertype_<!--{tab}-->').val();
+		$('#userType_2_<!--{tab}-->').find("option[value='" + defUserType + "']").attr("selected",true);
+		
+		<!--{tableId}-->.ajax.reload();
+	}
+	
+	cascadeSelect('propType', 'props', '<!--{json}-->');
+	
+	
+	$(function(){
+		selectCheck('type_id_<!--{tab}-->', 0, 'creatInput');
+	});
+	
+	function creatInput(tab){
+		if (tab == 0) {
+			$('#modal_body_<!--{tab}-->').append('<div class="form-group"><input id="sum_<!--{tab}-->" class="form-control" placeholder="添加原因(自定义)" name="sum" type="text"></div>')
+		} else {
+			if (hasDom('sum_<!--{tab}-->')) {
+				$('#sum_<!--{tab}-->').remove();
+			}
+			
+		}
+	}
+	
+	function hasDom(id){
+		obj = document.getElementById(id);
+		return obj != null ? true : false
+	}
+	
+	function selectCheck(id, val, fun){
+		var id = $('#' + id);
+		id.change(function(){
+			var checkVal = id.val();
+			if (val == checkVal) {
+				eval(fun + "(0)");
+			} else {
+				eval(fun + "(1)");
+			}
+		});
+	}
+	
+	</script>
+	

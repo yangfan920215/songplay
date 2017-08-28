@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title><!--{title}--></title>
+    
+    <link href="<!--{croot}-->bootstrap.min.css" rel="stylesheet">
+    <link href="<!--{croot}-->sb-admin-2.css" rel="stylesheet">
+    <style type="text/css">
+		/**
+		 * 公司名字体和大小
+		 */
+		.panel-title {
+			font-family: Microsoft YaHei;
+			font-size: 16px;
+		}
+	</style>
+</head>
+<body>   
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                        	<!--{title}-->
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input id="uname" class="form-control" placeholder="E-mail" name="uname" type="email" value="<!--{uname}-->" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input id="passwd" class="form-control" placeholder="Password" name="passwd" type="password" value="<!--{pwd}-->">
+                                </div>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input id="hascookie" type="checkbox" value="">账户保存
+	                                </label>
+                                </div>
+                                <div id="errorMsg" style="color: red;">
+                                </div>
+                                <button id="doLogin" type="button"  class="btn btn-lg btn-success btn-block">Login</button>
+                            </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   </body>
+    <script src="<!--{jroot}-->jquery.min.js"></script>
+    <script src="<!--{jroot}-->bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="<!--{jroot}-->metisMenu.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="<!--{jroot}-->raphael-min.js"></script>
+     <script src="<!--{jroot}-->morris.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="<!--{jroot}-->sb-admin-2.js"></script>
+    <script src="<!--{jroot}-->common.js"></script>
+    
+    <script type="text/javascript">
+	    $(function(){
+	    	$("#doLogin").click(function(event){
+	    		doLogin();
+	    	});
+	    	
+	    	// 点击回车触发
+	    	$("body").keyup(function () {  
+                if (event.which == 13){  
+                	doLogin();
+                }  
+            });    
+	    });
+	
+	    // 执行登录操作
+	    function doLogin(){
+	    	$.ajax({
+	    		type:"POST",
+	    		url:"<!--{checkroot}-->",
+	    		data:{uname:$("#uname").val(), passwd:$("#passwd").val(), hascookie:$('#hascookie').prop('checked')},
+	    		dataType:"text",
+	    		success:function(data){
+		    		if (data == 1) {
+		    			  window.location.href="<!--{mainroot}-->";
+					}else{
+						$("#errorMsg").html(data);
+					}
+		    	}
+	    		
+	    	});
+	    };
+    </script>
+</html>

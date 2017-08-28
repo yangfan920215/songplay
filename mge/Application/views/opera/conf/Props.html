@@ -1,0 +1,79 @@
+<link href="<!--{croot}-->fileinput.min.css" rel="stylesheet">
+
+<div class="modal fade" id="<!--{addImgModId}-->" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">批量添加道具图片</h4>
+			</div>
+			<div class="modal-body">
+				  <input id="file-zh" name="img" type="file" multiple>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+
+<script src="<!--{jroot}-->fileinput.min.js"></script>
+<script src="<!--{jroot}-->zh.js"></script>
+
+<script>
+	$("#file-zh").fileinput({
+		language : 'zh',
+		uploadUrl : '<!--{upUrl}-->', // you must set a valid URL here else you will get an error
+		allowedFileExtensions : [ 'jpg', 'png', 'gif' ],
+		overwriteInitial : false,
+		maxFileSize : 1000,
+		maxFilesNum : 10,
+		//allowedFileTypes: ['image', 'video', 'flash'],
+		slugCallback : function(filename) {
+			return filename.replace('(', '_').replace(']', '_');
+		}
+	});
+			
+			
+    $(document).ready(function() {
+        $("#file-zh").fileinput({
+            'showPreview' : false,
+            'allowedFileExtensions' : ['jpg', 'png','gif'],
+            'elErrorContainer': '#errorBlock'
+        });
+        
+        $("#file-zh").on('fileloaded', function(event, file, previewId, index) {
+        	
+    		$.ajax({
+		    	url: '<!--{upCheck}-->',
+		        type: 'POST',
+		        data: {'fileName':file.name},
+		        dataType:'json',
+		        success: function(ret){
+		        	status = ret.status;
+		        	data = ret.data;
+		        	
+		        	if (status == undefined || data == undefined) {
+		        		alert('服务器异常:返回了不正确的格式的数据');
+		        		return;
+					}
+		        	
+		        	if(status != 0){
+		        		alert(data);
+		        	}
+		        },
+		        error: function(ret){
+		        	alert('服务器异常:系统错误');
+		        	return;
+		        },
+	        
+	   		});
+        	
+            // alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
+        });
+        
+    });
+
+</script>

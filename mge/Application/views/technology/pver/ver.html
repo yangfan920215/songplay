@@ -1,0 +1,43 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->">
+	<div class="row">
+		<div class="col-sm-2">
+		 	<input id="jsb_bbgl_xbbsc_res" type="file" name="userfile">
+		 </div>
+	</div>
+	
+	<br/>
+	
+    <div class="row">
+	    <div class="col-sm-2">
+	    	<button onclick="submit_<!--{tab}-->()" type="button" class="btn btn-outline btn-default">点击提交</button>
+	    </div>
+    </div>
+    
+    <br/>
+    
+   <div class="row" id="result_<!--{tab}-->">
+   
+   </div>
+</div>
+<script>
+	function submit_<!--{tab}-->(){
+		var formData = new FormData();
+		console.info($('#jsb_bbgl_xbbsc_res')[0].files[0]);
+		formData.append('userfile', $('#jsb_bbgl_xbbsc_res')[0].files[0]);
+		console.info(formData);
+		$.ajax({
+		    url: '<!--{sroot}-->index.php/technology/pver/ver/submit',
+		    type: 'POST',
+		    cache: false,
+		    data: formData,
+		    processData: false,
+		    contentType: false
+		}).done(function(res) {
+			$('#result_<!--{tab}-->').empty();
+			$('#result_<!--{tab}-->').append('<span>' + res + '</span>')
+		}).fail(function(res) {
+			$('#result_<!--{tab}-->').empty();
+			$('#result_<!--{tab}-->').append('<span>' + res + '</span>')
+		});
+	}
+</script>

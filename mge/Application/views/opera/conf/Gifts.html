@@ -1,0 +1,642 @@
+<div class="tab-pane fade active in" id="<!--{modId}-->">
+	<div id="<!--{searchRowId}-->" class="row">
+		<div class="col-sm-2">
+			<select id="<!--{gameid}-->" name="gid" class="form-control">
+				<!--{gameList}-->
+				<option value="<!--{id}-->">
+					<!--{name}-->
+				</option>
+				<!--{/gameList}-->
+			</select>
+		</div>
+		<div class="col-sm-1">
+			<button class="btn btn-outline btn-default"
+				onclick="table_reload('<!--{tableId}-->', '<!--{searchRowId}-->')">查询</button>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div id="<!--{curdRowId}-->" class="row">
+		<div class="col-sm-1">
+			<button class="btn btn-outline btn-default" data-toggle="modal"
+				onclick="edit_i_data('<!--{addModId}-->','<!--{tableId}-->', 'id')" data-target="#<!--{addModId}-->">新增礼包</button>
+		</div>
+		<div class="col-sm-1">
+			<button class="btn btn-outline btn-default"
+				onclick="edit_i_data('<!--{editModId}-->', '<!--{tableId}-->', '');<!--{modId}-->_getProps('<!--{tableId}-->')"
+				data-toggle="modal" data-target="#<!--{editModId}-->">编辑礼包</button>
+		</div>
+		<div class="col-sm-1">
+			<button class="btn btn-outline btn-default"
+				onclick="delRow('<!--{ajaxRoot}-->delete', '<!--{tableId}-->')">删除礼包</button>
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-outline btn-default"
+				onclick="doAjax('<!--{ajaxRoot}-->ajaxData', '<!--{modId}-->')">启用配置</button>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div class="row">
+		<div class="dataTable_wrapper">
+			<div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+				<table id="<!--{tableId}-->"
+					class="display table table-striped table-bordered table-hover dataTable no-footer">
+					<thead>
+						<tr>
+							<th>选择</th>
+							<th>礼包ID</th>
+							<th>礼包名称</th>
+							<th>礼包描述</th>
+							<th>礼包图片名</th>
+							<th>自动解包</th>
+							<th>开出礼包数量</th>
+							<th>解包描述</th>
+							<th>游戏</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div class="modal fade" id="<!--{addModId}-->" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">新增礼包</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包ID" name="id" type="text">
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包名称" name="name" type="text">
+					</div>
+					<div class="form-group">
+						<select name="gameId" class="form-control">
+							<!--{gameList}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/gameList}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" placeholder="请输入礼包描述 " rows="3"
+							name="description"></textarea>
+					</div>
+					<div class="form-group">
+						<select name="auto_use" class="form-control">
+							<!--{config_auto_use}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/config_auto_use}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<select name="show_id" class="form-control">
+							<!--{show_id}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/show_id}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包使用提示" name="summary"
+							type="text">
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包图片名" name="photo"
+							type="text">
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入数量" name="count"
+							type="text">
+					</div>
+					<div class="form-group">
+						<table id="<!--{modId}-->_add_table">
+							<thead>
+								<tr>
+									<th style="width:30%;">道具名</th>
+									<th style="width:10%;">Min</th>
+									<th style="width:10%;">Max</th>
+									<th style="width:15%;">概率</th>
+									<th style="width:15%;">限量</th>
+									<th style="width:30%;">广播</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="width:30%;">
+										<select class="form-control like_search"
+											 name="add_props">
+												<!--{props}-->
+												<option value="<!--{id}-->">
+													<!--{name}-->
+												</option>
+												<!--{/props}-->
+										</select>
+									</td>
+									<td style="width:10%;">
+										<input class="form-control"  type="text" name="min">
+									</td>
+									<td style="width:10%;">
+										<input class="form-control"  type="text" name="max">
+									</td>
+									<td style="width:15%;">
+										<input class="form-control"  type="text" name="probability">
+									</td>
+									<td style="width:15%;">
+										<input class="form-control"  type="text" name="limit">
+									</td>
+									<td style="width:20%;">
+										<select class="form-control"
+											 name="broadcast">
+												<!--{is_broadcast}-->
+												<option value="<!--{id}-->">
+													<!--{name}-->
+												</option>
+												<!--{/is_broadcast}-->
+										</select>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<br />
+						<button class="btn btn-info" onclick="<!--{modId}-->_addRow(this)">添加一行</button>
+						<button class="btn btn-danger" onclick="<!--{modId}-->_delRow()">删除选中行</button>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="model"
+						onclick="addModel('<!--{addModId}-->', '<!--{tableId}-->', '<!--{ajaxRoot}-->add')">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<div class="modal fade" id="<!--{editModId}-->"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">编辑礼包</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包名称" name="name" type="text">
+					</div>
+					<div class="form-group">
+						<select name="gameId" class="form-control">
+							<!--{gameList}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/gameList}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" placeholder="请输入礼包描述 " rows="3"
+							name="description"></textarea>
+					</div>
+					<div class="form-group">
+						<select name="auto_use" class="form-control">
+							<!--{config_auto_use}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/config_auto_use}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<select name="show_id" class="form-control">
+							<!--{show_id}-->
+							<option value="<!--{id}-->">
+								<!--{name}-->
+							</option>
+							<!--{/show_id}-->
+						</select>
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包使用提示" name="summary"
+							type="text">
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入礼包图片名" name="photo"
+							type="text">
+					</div>
+					<div class="form-group">
+						<input class="form-control" placeholder="请输入数量" name="count"
+							type="text">
+					</div>
+					<div class="form-group">
+						<table id="<!--{modId}-->_edit_table">
+							<thead>
+								<tr>
+									<th style="width:30%;">道具名</th>
+									<th style="width:10%;">Min</th>
+									<th style="width:10%;">Max</th>
+									<th style="width:15%;">概率</th>
+									<th style="width:15%;">限量</th>
+									<th style="width:20%;">广播</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<br />
+						<button class="btn btn-info" onclick="<!--{modId}-->_edit_addRow(this)">添加一行</button>
+						<button class="btn btn-danger" onclick="<!--{modId}-->_edit_delRow()">删除选中行</button>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="model"
+						onclick="edit('<!--{ajaxRoot}-->edit', '<!--{editModId}-->', '<!--{tableId}-->')">确定</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+</div>
+<link href="<!--{croot}-->select2.min.css" rel="stylesheet">
+
+<script>
+var <!--{tableId}--> = $("#<!--{tableId}-->").DataTable({
+	"sDom" : 'lfrTtip',
+	"oTableTools" : {
+		"sSwfPath" : "<!--{down_tool_url}-->",
+		"aButtons" : [ {
+			"sExtends" : "xls",
+			"sButtonText" : "数据导出"
+		} ]
+	},
+	"order" : [ [ 0, "desc" ] ],
+	"displayLength" : 25,
+	ajax : {
+		'url' : "<!--{ajaxRoot}-->ajaxTable",
+		'type' : 'POST',
+		'data' : function(d) {
+			d.extra_search = [ {
+				'req' : getReqJson('<!--{searchRowId}-->'),
+			} ];
+
+		},
+	},
+	"language" : {
+		"lengthMenu" : "每页 _MENU_ 条记录",
+		"zeroRecords" : "没有找到记录",
+		"info" : "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+		"infoEmpty" : "无记录",
+		"infoFiltered" : "(从 _MAX_ 条记录过滤)",
+	},
+	columns : [ {
+		"data" : "NULL",
+		"defaultContent" : "",
+		"className" : "select-checkbox"
+	}, {
+		"data" : "id",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "name",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "description",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "photo",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "_auto_use",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "_count",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "summary",
+		"defaultContent" : "NULL"
+	}, {
+		"data" : "gname",
+		"defaultContent" : "NULL"
+	} ],
+	select : {
+		style : 'os',
+		selector : 'td:first-child'
+	},
+});
+
+var	<!--{modId}-->_add_table = $('#<!--{modId}-->_add_table').DataTable({
+	"paging" : false,
+	"ordering" : false,
+	"info" : false,
+	"searching" : false,
+});
+
+$(function(){
+	$('#<!--{modId}-->_add_table tbody').on('click','tr',function() {
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		} else {
+			<!--{modId}-->_add_table.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+	});
+
+	$(".like_search").select2();
+});
+
+function <!--{modId}-->_addRow(){<!--{modId}-->_add_table.row.add([
+	'<td style="width:30%;"><select class="form-control like_search" name="add_props"><!--{props}--><option value="<!--{id}-->"><!--{name}--></option><!--{/props}--></select></td>',
+	'<td style="width:10%;"><input class="form-control" type="text" name="min"></td>',
+	'<td style="width:10%;"><input class="form-control" type="text" name="max"></td>',
+	'<td style="width:15%;"><input class="form-control" type="text" name="probability"></td>',
+	'<td style="width:15%;"><input class="form-control" type="text" name="limit"></td>',
+	'<td style="width:20%;"><select class="form-control" name="broadcast"><!--{is_broadcast}--><option value="<!--{id}-->"><!--{name}--></option><!--{/is_broadcast}--></select>',
+]).draw();
+	$(".like_search").select2();
+}
+
+function <!--{modId}-->_delRow() {
+	<!--{modId}-->_add_table.row('.selected').remove().draw(false);
+}
+
+
+$('#<!--{addModId}-->').bootstrapValidator({
+	message : 'This value is not valid',
+	feedbackIcons : {
+		valid : 'glyphicon glyphicon-ok',
+		invalid : 'glyphicon glyphicon-remove',
+		validating : 'glyphicon glyphicon-refresh'
+	},
+	trigger : 'blur',
+	fields : {
+		id : {
+			validators : {
+				stringLength : {
+					min : 0,
+					max : 5,
+					message : '输入框只支持 0~5 位的字符'
+				},
+				notEmpty : {
+					message : '输入框不允许为空!'
+				},
+				greaterThan : {
+					value : 0,
+					inclusive : false,
+					message : '值不能小于0'
+				},
+				lessThan : {
+					value : 99999,
+					inclusive : true,
+					message : '值不能大于99999'
+				},
+				remote : {
+					url : '<!--{ajaxRoot}-->remote',
+					message : '数据不合法,请重新输入',
+				},
+			}
+
+		},
+		name : {
+			validators : {
+				stringLength : {
+					min : 0,
+					max : 10,
+					message : '输入框只支持 0~10 位的字符'
+				},
+				notEmpty : {
+					message : '输入框不允许为空!'
+				},
+
+			}
+
+		},
+		description : {
+			validators : {
+				stringLength : {
+					min : 0,
+					max : 255,
+					message : '输入框只支持 0~255 位的字符'
+				},
+				notEmpty : {
+					message : '输入框不允许为空!'
+				},
+
+			}
+
+		},
+		summary : {
+			validators : {
+				stringLength : {
+					min : 0,
+					max : 64,
+					message : '输入框只支持 0~64 位的字符'
+				},
+				notEmpty : {
+					message : '输入框不允许为空!'
+				},
+
+			}
+
+		},
+		photo : {
+			validators : {
+				notEmpty : {
+					message : '输入框不允许为空!'
+				},
+				remote : {
+					url : '<!--{ajaxRoot}-->remote',
+					message : '数据不合法,请重新输入',
+				},
+			}
+
+		},
+	}
+});
+
+
+	var	<!--{modId}-->_edit_table = $('#<!--{modId}-->_edit_table').DataTable({
+		"paging" : false,
+		"ordering" : false,
+		"info" : false,
+		"searching" : false,
+	});
+
+	$(function(){
+		$('#<!--{modId}-->_edit_table tbody').on('click','tr',function() {
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+			} else {
+				<!--{modId}-->_edit_table.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+		});
+
+		$(".like_search").select2();
+	});
+
+	function <!--{modId}-->_edit_addRow(){<!--{modId}-->_edit_table.row.add([
+		'<td style="width:30%;"><select class="form-control like_search" name="add_props"><!--{props}--><option value="<!--{id}-->"><!--{name}--></option><!--{/props}--></select></td>',
+		'<td style="width:10%;"><input class="form-control" type="text" name="min"></td>',
+		'<td style="width:10%;"><input class="form-control" type="text" name="max"></td>',
+		'<td style="width:15%;"><input class="form-control" type="text" name="probability"></td>',
+		'<td style="width:15%;"><input class="form-control" type="text" name="limit"></td>',
+		'<td style="width:20%;"><select class="form-control" name="broadcast"><!--{is_broadcast}--><option value="<!--{id}-->"><!--{name}--></option><!--{/is_broadcast}--></select>',
+	]).draw();
+		$(".like_search").select2();
+	}
+
+	function <!--{modId}-->_edit_delRow() {
+		<!--{modId}-->_edit_table.row('.selected').remove().draw(false);
+	}
+
+	$('#table_<!--{tab_id}-->_edit').bootstrapValidator({
+		message : 'This value is not valid',
+		feedbackIcons : {
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh'
+		},
+		trigger : 'blur',
+		fields : {
+			name : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 10,
+						message : '输入框只支持 0~10 位的字符'
+					},
+					notEmpty : {
+						message : '输入框不允许为空!'
+					},
+
+				}
+
+			},
+			summary : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 64,
+						message : '输入框只支持 0~64 位的字符'
+					},
+					notEmpty : {
+						message : '输入框不允许为空!'
+					},
+
+				}
+
+			},
+			description : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 255,
+						message : '输入框只支持 0~255 位的字符'
+					},
+					notEmpty : {
+						message : '输入框不允许为空!'
+					},
+
+				}
+
+			},
+			photo : {
+				validators : {
+					notEmpty : {
+						message : '输入框不允许为空!'
+					},
+					remote : {
+						url : '<!--{ajaxRoot}-->remote',
+						message : '数据不合法,请重新输入',
+					},
+				}
+
+			},
+			indate : {
+				validators : {
+					notEmpty : {
+						message : '输入框不允许为空!'
+					},
+					greaterThan : {
+						value : 0,
+						inclusive : false,
+						message : '值不能小于0'
+					},
+					lessThan : {
+						value : 65536,
+						inclusive : true,
+						message : '值不能大于65536'
+					},
+				}
+
+			},
+		}
+	});
+
+  function <!--{modId}-->_getProps(tableId){
+	  	$('#<!--{modId}-->_edit_table').find('tbody').empty();
+	  
+		var req = new Object();
+	 	var pList = new Array();
+	  
+		// 获取选中的数据
+		var aData = eval(tableId).rows('.selected').data();
+		
+		if (aData.length == 0) {
+			return;
+		}
+	
+		aData.each(function(key, value){
+			pList.push(key);
+		});
+	  	
+		
+		req.tData = pList;
+		
+		<!--{modId}-->_edit_table.row().clear().draw();
+		
+ 		$.ajax({
+	    	url: '<!--{ajaxRoot}-->getProps',
+	        type: 'POST',
+	        data: req,
+	        dataType:'json',
+	        success: function(ret){
+	        	
+	        	
+	        	for(var i = 0; i<ret.length; i++){
+		        	<!--{modId}-->_edit_table.row.add([
+			        	       							'<td style="width:20%;"><select id="<!--{modId}-->_edit_1_' + i + '" class="form-control like_search" name="add_props"><!--{props}--><option value="<!--{id}-->"><!--{name}--></option><!--{/props}--></select></td>',
+			        	       							'<td style="width:10%;"><input class="form-control" type="text" name="min" value="' + ret[i]["quantity1"] + '"></td>',
+			        	       							'<td style="width:10%;"><input class="form-control" type="text" name="max" value="' + ret[i]["quantity2"] + '"></td>',
+			        	       							'<td style="width:15%;"><input class="form-control" type="text" name="probability" value="' + ret[i]["probability"] + '"></td>',
+			        	       							'<td style="width:15%;"><input class="form-control" type="text" name="limit" value="' + ret[i]["limit_count"] + '"></td>',
+			        	       							'<td style="width:30%;"><select id="<!--{modId}-->_edit_2_' + i + '" class="form-control" name="broadcast"><!--{is_broadcast}--><option value="<!--{id}-->"><!--{name}--></option><!--{/is_broadcast}--></select>',
+			        ]).draw();
+			        
+			        $('#<!--{modId}-->_edit_1_' + i).val(ret[i]["prop_id"]);
+			        $('#<!--{modId}-->_edit_2_' + i).val(ret[i]["broadcast"]);
+			        $(".like_search").select2();
+	        	}
+	        },
+	        error: function(ret){
+	        	return;
+	        },
+        
+   		});
+  }
+</script>

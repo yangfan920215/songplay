@@ -1,0 +1,314 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row">
+		<div class="col-sm-2">
+			<select id="onlinegame_gameid" name="gameId" class="form-control">
+				<!--{gameList}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/gameList}-->
+			</select>
+		</div>
+		
+		 <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="onlinegame_dtp_input1" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="onlinegame_dtp_input1" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="onlinegame_dtp_input2" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="onlinegame_dtp_input2" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_date').datetimepicker({
+	                language:  'es',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0
+	           });
+			</script>
+		<div class="col-sm-2">
+			<button id="get_data_onlinegame" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+	</div>
+	
+	<br/>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="onlinegame_index_div"
+						class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table
+							class="table table-striped table-bordered table-hover dataTable no-footer"
+							id="onlinegame_index_table" role="grid"
+							aria-describedby="onlinegame_index_table_info">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script>
+	$('#get_data_onlinegame').on('click', function(){
+		var gid = $('#onlinegame_gameid').val();
+		var sDate = $('#onlinegame_dtp_input1').val();
+		var eDate = $('#onlinegame_dtp_input2').val();
+		
+		
+		if (typeof(onlinegame) != 'undefined') {
+			onlinegame.destroy();
+		}
+        $('#onlinegame_index_table').empty();
+		
+		$.ajax({
+    		type:"POST",
+    		url:"<!--{sroot}-->index.php/analysis/onlinegame/getRoomNameList",
+    		data:{'gid':gid},
+    		dataType:"text",
+    		success:function(colList){
+    			var res = eval(colList);
+    			
+    			var colLength = res.length;
+    			
+    			// 表头
+    			setThead_onlinegame_index(res);
+    			console.info(colLength);
+    			if (colLength == 4) {
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',},{data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "4_pl",defaultContent : 'NULL',}, {data : "4_num",defaultContent : 'NULL',},{data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+    			}else if(colLength == 5){
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',}, {data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "4_pl",defaultContent : 'NULL',}, {data : "4_num",defaultContent : 'NULL',}, {data : "5_pl",defaultContent : 'NULL',}, {data : "5_num",defaultContent : 'NULL',}, {data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+				}else if(colLength == 3){
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',}, {data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+				}else if(colLength == 6){
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',}, {data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "4_pl",defaultContent : 'NULL',}, {data : "4_num",defaultContent : 'NULL',}, {data : "5_pl",defaultContent : 'NULL',}, {data : "5_num",defaultContent : 'NULL',}, {data : "6_pl",defaultContent : 'NULL',}, {data : "6_num",defaultContent : 'NULL',}, {data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+				}else if(colLength == 7){
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',}, {data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "4_pl",defaultContent : 'NULL',}, {data : "4_num",defaultContent : 'NULL',}, {data : "5_pl",defaultContent : 'NULL',}, {data : "5_num",defaultContent : 'NULL',}, {data : "6_pl",defaultContent : 'NULL',}, {data : "6_num",defaultContent : 'NULL',}, {data : "7_pl",defaultContent : 'NULL',}, {data : "7_num",defaultContent : 'NULL',}, {data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+				}else if(colLength == 8){
+    				onlinegame = $('#onlinegame_index_table').DataTable({
+	    				 "sDom": 'lfrTtip',
+	    				 "oTableTools": {
+	    						// 该目录必须是以ftp形式访问的目录
+	    					    "sSwfPath": "http://119.28.19.213:8004/copy_csv_xls_pdf.swf",
+	    					    "aButtons": [ 
+	    					                  {
+	    					                	  "sExtends":"xls",
+	    					                	  "sButtonText":"数据导出"
+	    					                  }
+	    					                ],
+	    					 },
+	    				 "order":[[0, "desc"]],
+	    				 "displayLength": 25,
+	    				 ajax : {
+	    				 	'url':'<!--{sroot}-->index.php/analysis/onlinegame/getData',
+	    					'type':'POST',
+	    					'data':function(d){
+	    						d.extra_search =[
+	    							{'gameId':$('#onlinegame_gameid').val()},
+	    							{'sDate':$('#onlinegame_dtp_input1').val()},
+	    							{'eDate':$('#onlinegame_dtp_input2').val()}
+	    						];
+	    						
+	    					},
+	    				},
+	    				columns : [{data : "post_date",defaultContent : 'NULL',}, {data : "0_pl",defaultContent : 'NULL',}, {data : "0_num",defaultContent : 'NULL',}, {data : "1_pl",defaultContent : 'NULL',}, {data : "1_num",defaultContent : 'NULL',}, {data : "2_pl",defaultContent : 'NULL',}, {data : "2_num",defaultContent : 'NULL',}, {data : "3_pl",defaultContent : 'NULL',}, {data : "3_num",defaultContent : 'NULL',}, {data : "4_pl",defaultContent : 'NULL',}, {data : "4_num",defaultContent : 'NULL',}, {data : "5_pl",defaultContent : 'NULL',}, {data : "5_num",defaultContent : 'NULL',}, {data : "6_pl",defaultContent : 'NULL',}, {data : "6_num",defaultContent : 'NULL',}, {data : "7_pl",defaultContent : 'NULL',}, {data : "7_num",defaultContent : 'NULL',}, {data : "7_pl",defaultContent : 'NULL',}, {data : "7_num",defaultContent : 'NULL',}, {data : "avg",defaultContent : 'NULL',}],
+	    			    select: {
+	    			      style:    'os',
+	    			      selector: 'td:first-child'
+	    			    },
+	    			});
+				}
+    			
+    			//table.ajax.reload();
+	    	}
+    	});
+	}) 
+
+	function setThead_onlinegame_index(colList){
+		$('#onlinegame_index_table').append('<thead></thead>');
+		$('#onlinegame_index_table').find('thead').append('<tr></tr><tr></tr>');
+		$('#onlinegame_index_table').find('thead').find('tr:first').append('<th></th>');
+		$('#onlinegame_index_table').find('thead').find('tr:last').append('<th>日期</th>');
+		$.each(colList, function(key, value){
+			$('#onlinegame_index_table').find('thead').find('tr:first').append('<th colspan="2">'+value+'</th>');
+			$('#onlinegame_index_table').find('thead').find('tr:last').append('<th>人数</th><th>局数</th>');
+		})
+		$('#onlinegame_index_table').find('thead').find('tr:first').append('<th colspan="3">玩家</th>');
+		$('#onlinegame_index_table').find('thead').find('tr:last').append('<th>总人数</th><th>总局数</th><th>人均局数</th>');
+	}
+	
+	$(function(){
+		$('#get_data_onlinegame').click();
+	});
+</script>

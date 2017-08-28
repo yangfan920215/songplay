@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title><!--{title}--></title>
+
+<link href="<!--{croot}-->bootstrap.min.css" rel="stylesheet">
+<link href="<!--{croot}-->font-awesome.min.css" rel="stylesheet">
+<link href="<!--{croot}-->jquery.dataTables.min.css" rel="stylesheet">
+<link href="<!--{croot}-->sb-admin-2.css" rel="stylesheet">
+<link href="<!--{croot}-->buttons.dataTables.min.css" rel="stylesheet">
+<link href="<!--{croot}-->select.dataTables.min.css" rel="stylesheet">
+<link href="<!--{croot}-->editor.dataTables.min.css" rel="stylesheet">
+<link href="<!--{croot}-->bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="<!--{croot}-->dataTables.tableTools.css" rel="stylesheet">
+<link href="<!--{croot}-->morris.css" rel="stylesheet">
+<link href="<!--{croot}-->bootstrapValidator.min.css" rel="stylesheet">
+<link href="<!--{croot}-->pkp.css" rel="stylesheet">
+<style type="text/css">
+td.details-control {
+    background: url('<!--{iroot}-->details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('<!--{iroot}-->details_close.png') no-repeat center center;
+}
+
+.col-sm-2{
+	min-width:220px;
+}
+
+.loading {
+	position: fixed;
+	left: 45%;
+	top: 65%;
+	z-index: 1000;
+}
+
+.bag_tk {
+	margin: 0;
+	padding: 0;
+	border: none;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(51, 51, 51);
+	opacity: 0.6;
+	z-index: 9999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: block;
+}
+</style>
+
+
+<script src="<!--{jroot}-->jquery-1.11.3.min.js"></script>
+<script src="<!--{jroot}-->jquery.dataTables.min.js"></script>
+<script src="<!--{jroot}-->bootstrap-datetimepicker.min.js"></script>
+<script src="<!--{jroot}-->bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="<!--{jroot}-->dataTables.buttons.min.js"></script>
+<script src="<!--{jroot}-->dataTables.select.min.js"></script>
+<script src="<!--{jroot}-->dataTables.tableTools.js"></script>
+<script src="<!--{jroot}-->bootstrapValidator.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+<nav class="navbar-default navbar-static-top" style="margin-bottom: 0">
+	<!-- 左上角title -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+        </button>
+		<a class="navbar-brand" href="javascript:void(0);"><!--{title}--></a>
+	</div>
+
+	<!-- 右上角标签 -->
+	<ul class="nav navbar-top-links navbar-right">
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+				<i class="fa fa-user fa-fw"></i>
+				<i class="fa fa-caret-down"></i>
+			</a>
+			<!--个人设置 -->
+			<ul class="dropdown-menu dropdown-user">
+<!-- 			<li>
+					<a href="javascript:void(0);">
+						<i class="fa fa-user fa-fw"></i>
+						账户信息
+					</a>
+				</li> -->
+				<li>
+					<a href="javascript:void(0);"  data-toggle="modal" data-target="#setPwd">
+						<i class="fa fa-gear fa-fw"></i>
+						修改密码
+					</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="<!--{logoutUrl}-->">
+						<i class="fa fa-sign-out fa-fw"></i>
+						登出
+					</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	
+	<!-- 侧边栏 -->
+	<div class="navbar-default sidebar" role="navigation">
+		<!-- 搜索栏 -->
+		<div id="mainSearch" class="sidebar-nav navbar-collapse" style="overflow:auto;">
+			<ul class="nav" id="side-menu">
+	 			<li class="sidebar-search">
+					<div class="input-group custom-search-form">
+						<input id="likeSearch" type="text" class="form-control" placeholder="Search...">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" onclick="likeSearch()">
+								<i class="fa fa-search"></i>
+							</button>
+						</span>
+					</div>
+				</li>
+				<!--{limitHtml}-->
+			</ul>
+		</div>
+	</div>
+</nav>
+
+	<!-- 主界面 -->
+	<div id="page-wrapper">
+		 <div class="row">
+		    <div class="col-lg-12">
+            	<ul id="tabs" class="nav nav-pills" style="margin-top: 10px;">
+					<li id="li_home-pills" class="active"><a href="#tab_home-pills" data-toggle="tab" aria-expanded="false">主页</a>
+					</li>
+				</ul>
+        	</div>
+    	</div>
+    	
+    	<br/>
+    	
+    	 <div class="row">
+    	 	<div class="col-lg-12">
+    	 		<div class="panel panel-default">
+    	 		
+					<div class="panel-body" style="min-height: 800px;">
+						<div class="col-lg-12">
+				            <div id="tab-content" class="tab-content">
+				                <div class="tab-pane fade active in" id="tab_home-pills">
+				                	<br/>
+				                	<h4>欢迎登录<!--{title}--></h4>
+				                    <ul>
+										<li>
+											用户账户：
+											<!--{uname}-->
+										</li>
+									</ul>
+				                </div>
+				            </div>
+						</div>
+					</div>
+				</div>
+    	 	</div>
+    	 </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="setPwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <div id="modal_body_<!--{tab}-->" class="modal-body">
+               	<div class="form-group">
+            		<input class="form-control" placeholder="原密码" name="pwd" type="password">
+            	</div>
+            
+            	<div class="form-group">
+            		<input class="form-control" placeholder="新密码" name="npwd" type="password">
+            	</div>
+            	
+     	        <div class="form-group">
+            		<input class="form-control" placeholder="请输入两次" name="rpwd" type="password">
+            	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="model" onclick="doAjax('<!--{setPwdUrl}-->', 'setPwd')" >确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div id="loading" style="display: none;">
+	<div class="loading">
+		<img src="<!--{iroot}-->loading.gif">
+	</div>
+
+	<div class="bag_tk"></div>
+</div>
+
+</body>
+<script type="text/javascript">
+	// 加载节点栏
+	$(function(){
+		var access_list = <!--{access_list}-->;
+		$.each(access_list, function(idx, item){
+			if (item.controller == null) {
+				var html_1 = '<li id="left_0_'+item.id+'" ><a data-likeSearch=' + item.name + ' href="#"><i class="fa fa-sitemap fa-fw"></i>'+item.name+'<span class="fa arrow"></span></a></li>';
+			}else{
+//				if (item.file == '') {
+					var html_1 = '<li id="left_0_'+item.id+'"><a data-likeSearch=' + item.name + ' onclick="getView(\'' + item.controller + '_' + item.method +'\', \''+item.name+'\', ' + item.id + ')" href="#"><i class="fa fa-files-o fa-fw"></i>'+item.name+'<span class="fa arrow"></span></a></li>';
+/* 				} else {
+					var html_1 = '<li id="left_0_'+item.id+'"><a onclick="getView(\''+ item.file + '_' + item.controller + '_' + item.method +'\', \''+item.name+'\', ' + item.id + ')" href="#"><i class="fa fa-files-o fa-fw"></i>'+item.name+'<span class="fa arrow"></span></a></li>';
+				} */
+				
+			}
+			
+			$('#side-menu').append(html_1);
+	
+			// 当不止一层时
+			if (typeof(item.data) != "undefined") {
+				$.each(item.data, function(idx1, item1){
+	
+					if (item1.controller == null) {
+						var html_2 = '<ul class="nav nav-second-level"><li id="left_1_'+item1.id+'"><a data-likeSearch=' + item1.name + ' href="#">'+item1.name+'<span class="fa arrow"></span></a></li></ul>';
+					}else{
+//						if (item1.file == '') {
+							var html_2 = '<ul class="nav nav-second-level"><li id="left_1_'+item1.id+'"><a data-likeSearch=' + item1.name + ' onclick="getView(\'' + item.file + '_'  + item1.controller + '_' + item1.method +'\', \''+item1.name+'\', ' + item1.id + ')" href="#">'+item1.name+'<span class="fa arrow"></span></a></li></ul>';
+/* 						} else {
+							var html_2 = '<ul class="nav nav-second-level"><li id="left_1_'+item1.id+'"><a onclick="getView(\''+ item1.file + '_'  + item1.controller + '_' + item1.method +'\', \''+item1.name+'\', ' + item1.id + ')" href="#">'+item1.name+'<span class="fa arrow"></span></a></li></ul>';
+						} */
+	
+					}
+					$('#left_0_'+item.id).append(html_2);
+					
+					// 当不止二层时
+					if (typeof(item1.data) != "undefined") {
+						$.each(item1.data, function(idx2, item2){
+							if (item2.controller == null) {
+								var html_3 = '<ul class="nav nav-third-level" ><li><a data-likeSearch=' + item2.name + ' href="#">'+item2.name+'</a></li></ul>';
+							}else{
+		//						if (item2.file == '') {
+									var html_3 = '<ul class="nav nav-third-level" ><li><a data-likeSearch=' + item2.name + ' onclick="getView(\'' + item.file + '_' + item1.file + '_' + item2.controller + '_' + item2.method +'\', \''+item2.name+'\', ' + item2.id + ')" href="#" >'+item2.name+'</a></li></ul>';
+	/* 							} else {
+									var html_3 = '<ul class="nav nav-third-level" ><li><a onclick="getView(\''+ item2.file + '_'  + item2.controller + '_' + item2.method +'\', \''+item2.name+'\', ' + item2.id + ')" href="#" >'+item2.name+'</a></li></ul>';
+								} */
+							}
+							
+							$('#left_1_'+item1.id).append(html_3);
+						});
+					}
+									
+				});
+			}
+		});
+		
+		// 获取用户屏幕高度
+		var height=document.documentElement.clientHeight;
+		$('#mainSearch').css('height', height);
+	});
+	
+	function getView(iName, sName, nid) {
+		if ($('#li_' + nid).length > 0) {
+			$('#li_' + nid + ' a').click();
+			return false;
+		}
+	
+		// 若空格存在,则表示使用默认index
+		var cName = iName.replace(/_/g, '/');
+		
+		$.ajax({
+			type : "POST",
+			url : "<!--{sroot}-->" + cName,
+			dataType : "text",
+			success : function(data) {
+				if (hasDom('li_' + nid)) {
+					return false;
+				}
+				
+				$('#tabs').append('<li id="li_'+nid+'"><a href="#tab_'+nid+'" data-toggle="tab" aria-expanded="true">' + sName + '</a></li>');
+				
+				$('#tab-content').append(data);
+				
+				// 选中新建标签
+				showTab(nid);
+	
+				// 赋予双击删除事件
+				$('#li_' + nid).dblclick(function(){
+					delTab(nid);
+				});
+			}
+		});
+	}
+	
+	// 选中标签
+	function showTab(tabId){
+		$('#tabs li').removeClass('active');
+		$('#tab-content div').removeClass('active');
+			
+		$('#li_' + tabId).addClass('active');
+		$('#tab_' + tabId).addClass('active');
+
+	}
+	
+	// 删除某个标签
+	function delTab(tabId){
+		console.info(tabId);
+		$('#' + tabId).remove();
+		$('#li_' + tabId).remove();
+		
+		showTab('home-pills')
+		
+		//console.info($('#' + tabID));
+		
+		//var pver_id = typeof($('#' + tabID).prev().attr('id')) == undefined ? 'home-pills' : $(tabID).prev().attr('id');
+		
+		//var iName = $(tabID ).find('a').attr('href');
+		//$(tabID).remove()
+		//$(iName).remove();
+		//console.info(pver_id);
+		
+		//showTab(pver_id);
+	}
+	
+	// 模糊查询打开节点
+	function likeSearch(){
+		var val = $('#likeSearch').val();
+		$('a[data-likeSearch=' + val +']').click();
+	}
+</script>
+<script src="<!--{jroot}-->bootstrap.min.js"></script>
+<script src="<!--{jroot}-->metisMenu.min.js"></script>
+<script src="<!--{jroot}-->raphael-min.js"></script>
+<script src="<!--{jroot}-->morris.min.js"></script>
+<script src="<!--{jroot}-->sb-admin-2.js"></script>
+<script src="<!--{jroot}-->comm.js"></script>
+<script src="<!--{jroot}-->history.js"></script> <!--  -->
+<script src="<!--{jroot}-->excanvas.min.js"></script>
+<script src="<!--{jroot}-->jquery.flot.js"></script>
+<script src="<!--{jroot}-->jquery.flot.pie.js"></script>
+<script src="<!--{jroot}-->jquery.flot.resize.js"></script>
+<script src="<!--{jroot}-->jquery.flot.time.js"></script>
+<script src="<!--{jroot}-->jquery.flot.tooltip.min.js"></script>
+<script src="<!--{jroot}-->fileinput.min.js"></script>
+<script src="<!--{jroot}-->zh.js"></script>
+<script src="<!--{jroot}-->select2.min.js"></script>
+</html>

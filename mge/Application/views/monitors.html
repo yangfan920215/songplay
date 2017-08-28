@@ -1,0 +1,120 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row">
+		<div class="col-sm-2">
+			<select id="site_monitors" name="site" class="form-control">
+				<!--{sites}-->
+				<option value="<!--{dname}-->"><!--{desc}--></option>
+				<!--{/sites}-->
+			</select>
+		</div>
+	
+		<div class="col-sm-2">
+			<div class="input-group date form_datetime" data-date="" data-date-format="yyyy-mm-dd HH:ii:ss" data-link-field="<!--{ciName}-->_dtp_input1" data-link-format="yyyy-mm-dd HH:ii:ss">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->" style="width: 160px;">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="<!--{tab}-->_dtp_input1" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_datetime" data-date="" data-date-format="yyyy-mm-dd HH:ii:ss" data-link-field="<!--{ciName}-->_dtp_input2" data-link-format="yyyy-mm-dd HH:ii:ss">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->" style="width: 160px;">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="<!--{tab}-->_dtp_input2" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_datetime').datetimepicker({
+	                language:  'zh-CN',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0
+	           });
+			</script>
+			
+		<div class="col-sm-2">
+			<button onclick="<!--{ajaxReload}-->" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+	</div>
+	
+	<br/>
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+					
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="<!--{divId}-->"
+						class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table
+							class="table table-striped table-bordered table-hover dataTable no-footer"
+							id="<!--{tableId}-->" role="grid">
+							<thead>
+								<tr>
+									<th>访问时间</th>
+									<th>url</th>
+									<th>接收数据</th>
+									<th>接收流</th>
+									<th>返回数据</th>
+									<th>拓展字段</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+		var <!--{tableId}--> = $('#<!--{tableId}-->').DataTable({
+			"sDom": 'lfrtip',
+			"order":[[0, "desc"]],
+			"displayLength": 25,
+			 ajax : {
+				'url':'<!--{ajaxData}-->',
+				'type':'POST',
+				'data':function(d){
+					d.extra_search =[
+						{'dname':$('#site_monitors').val()},
+						{'sDate':$('#<!--{tab}-->_dtp_input1').val()},
+						{'eDate':$('#<!--{tab}-->_dtp_input2').val()},
+					];
+					
+				},
+			},
+			columns : [
+				{
+					"data":"datetime",
+					"defaultContent":'NULL',
+				},{
+					"data":"url",
+					"defaultContent":'NULL',
+				},{
+					"data":"req",
+					"defaultContent":'NULL',
+				},{
+					"data":"jsonIn",
+					"defaultContent":'NULL',
+				},{
+					"data":"resp",
+					"defaultContent":'NULL',
+				},{
+					"data":"ext",
+					"defaultContent":'NULL',
+				},
+			],
+		});
+	
+		function <!--{ajaxReload}-->{
+			<!--{tableId}-->.ajax.reload();
+		}
+</script>

@@ -1,0 +1,184 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row">
+		<div class="col-sm-2">
+			<div class="form-group">
+			<!--{gameList}-->
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="gidList" checked="checked" value="<!--{id}-->" show="<!--{name}-->"><!--{name}-->
+                </label>
+            <!--{/gameList}-->
+            </div>
+		</div>
+		
+		 <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="<!--{ciName}-->_dtp_input1" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{sDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+		 		<input type="hidden" id="<!--{ciName}-->_dtp_input1" value="<!--{sDate}-->" />
+            </div>
+         </div>
+         
+         <div class="col-sm-2">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="<!--{ciName}-->_dtp_input2" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="16" type="text" value="<!--{eDate}-->">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="<!--{ciName}-->_dtp_input2" value="<!--{eDate}-->" />
+            </div>
+         </div>
+            <script type="text/javascript">
+	           $('.form_date').datetimepicker({
+	                language:  'es',
+	                weekStart: 1,
+	                todayBtn:  1,
+		       		autoclose: 1,
+		       		todayHighlight: 1,
+		       		startView: 2,
+		       		minView: 2,
+		       		forceParse: 0
+	           });
+			</script>
+		<div class="col-sm-2">
+			<button onclick="get_data_<!--{ciName}-->()" type="button" class="btn btn-outline btn-default">查询</button>
+		</div>
+	</div>
+	
+	<br/>
+
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				每日在线走势曲线
+			</div>
+			<div class="panel-body">
+            	<div id="<!--{ciName}-->_morris-area-chart"></div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="<!--{divId}-->" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table id="<!--{tableId}-->" class="display table table-striped table-bordered table-hover dataTable no-footer">
+							<thead>
+								<tr>
+									<th>选择</th>
+									<th>游戏</th>
+									<th>道具</th>
+									<th>手机号码</th>
+									<th>姓名</th>
+									<th>身份信息</th>
+									<th>guid</th>
+									<th>联系地址</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var <!--{ciName}--> = Morris.Area({
+    element: '<!--{ciName}-->_morris-area-chart',
+    data:  <!--{morris_data}-->,
+    xkey: 'post_date',
+    ykeys: ['game_44', 'game_100'],
+    labels: ['德州扑克', '斗地主'],
+    behaveLikeLine: true,
+    pointSize: 2,
+    hideHover: 'auto',
+    resize: true
+});
+
+
+$('#<!--{tableId}-->').DataTable({
+	dom: "Bfrtip",
+	ajax : '<!--{sroot}-->index.php/exchange/getData',
+	"order":[[0, "desc"]],
+	columns : [ 
+	{
+	    data: null,
+	    defaultContent: '',
+	    className: 'select-checkbox',
+	    orderable: false
+	},{
+		data : "gname",
+		defaultContent : 'NULL',
+	}, {
+		data : "pname",
+		defaultContent : 'NULL',
+	}, {
+		data : "phone",
+		defaultContent : 'NULL',
+	}, {
+		data : "name",
+		defaultContent : 'NULL',
+	}, {
+		data : "identity_card",
+		defaultContent : 'NULL',
+	}, {
+		data : "guid",
+		defaultContent : 'NULL',
+	}, {
+		data : "adress",
+		defaultContent : 'NULL',
+	},],
+	
+    select: {
+        style:    'os',
+        selector: 'td:first-child'
+    },
+    buttons: [
+              { extend: "remove", editor: editor}
+ 	],
+});
+
+
+	function get_data_<!--{ciName}-->(){
+		$('#<!--{ciName}-->_morris-area-chart').empty();
+		
+		var gidList = $('#<!--{tab}-->').find("input[name='gidList']:checked").serialize();
+		// 将gidList=全部替换,仅仅使用replace函数只会替换第一个
+		var gidList = gidList.replace(new RegExp("gidList=", 'g'), '').split('&');
+		
+		var ykeys_arr = [];
+		var lasels_arr = [];
+		$.each(gidList, function(n, value){
+			lasels_arr[n] = $("input[value='"+value+"']").attr('show');
+			ykeys_arr[n] = 'game_' + value;
+		});
+		
+    	$.ajax({
+    		type:"POST",
+    		url:"<!--{ajaxData}-->",
+    		data:{gidList:$('#<!--{tab}-->').find("input[name='gidList']:checked").serialize(), sDate:$("#<!--{ciName}-->_dtp_input1").val(), eDate:$("#<!--{ciName}-->_dtp_input2").val()},
+    		dataType:"json",
+    		async: false,
+    		success:function(data){
+    			console.info(data);
+    			// 数据必须先经过eval函数处理成json对象
+    			Morris.Area({
+    			    element: '<!--{ciName}-->_morris-area-chart',
+    			    data:  data,
+    			    xkey: 'post_date',
+    			    ykeys: ykeys_arr,
+    			    behaveLikeLine: true,
+    			    labels: lasels_arr,
+    			    pointSize: 2,
+    			    hideHover: 'auto',
+    			    resize: true
+    			});
+    			
+	    	}
+    	});
+	}
+</script>

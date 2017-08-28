@@ -1,0 +1,95 @@
+<div class="tab-pane fade active in" id="<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row">
+		<div class="col-sm-1">
+			<select id="usertype_<!--{tab}-->" name="usertype" class="form-control">
+				<!--{userType}-->
+				<option value="<!--{id}-->"><!--{name}--></option>
+				<!--{/userType}-->
+			</select>
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div class="row" >
+		<div class="col-sm-3">
+			<input id="userkey_<!--{tab}-->" name="userkey" class="form-control" placeholder="多用户请用,(英文输入法模式下)分隔ID" type="text">	
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div class="row">
+		<div class="col-sm-2">
+			<input id="pid_<!--{tab}-->" name="pid" class="form-control" placeholder="礼包ID" list="browsers" type="text">
+			
+			<datalist id="browsers">
+			<!--{pList}-->
+			    <option value="<!--{id}-->"><!--{name}--></option>
+			<!--{/pList}-->
+			</datalist>	
+			
+		</div>
+		
+		<div class="col-sm-1">
+			<input id="pnum_<!--{tab}-->" name="pnum" class="form-control" placeholder="礼包个数" type="text">
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="send_<!--{tab}-->" data-link-format="yyyy-mm-dd hh:ii:ss">
+	            <input class="form-control" size="16" type="text" placeholder="发送时间" name="send_time">
+	            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				<input type="hidden" id="send_<!--{tab}-->"/>
+	        </div>
+	        
+	  		<script type="text/javascript">
+	          $('.form_date').datetimepicker({
+	               language:  'zh-CN',
+	               weekStart: 1,
+	               todayBtn:  1,
+	       		   autoclose: 1,
+	       		   todayHighlight: 1,
+	       		   startView: 2,
+	       		   forceParse: 0,
+	               showMeridian: 1
+	          });
+			</script>
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<textarea class="form-control" rows="5" placeholder="内容" name="desc"></textarea>
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<button id="send_button_<!--{tab}-->" class="btn btn-outline btn-default">发送</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function(){
+		$('#send_button_<!--{tab}-->').bind("click", function(){
+			var data = new Object();
+			var reqData = new Object();
+			var req = getReqJson('<!--{tab}-->');
+			
+			reqData['data'] = new Object();
+			reqData['data']['req'] = req;
+			
+			doAjax('<!--{ajaxMorris}-->', '<!--{tab}-->');
+		});
+	});
+</script>

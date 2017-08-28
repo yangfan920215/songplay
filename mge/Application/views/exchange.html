@@ -1,0 +1,136 @@
+<div class="tab-pane fade active in" id="tab_<!--{tab}-->" style="margin-top: 10px;">
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			</div>
+			<div class="panel-body">
+				<div class="dataTable_wrapper">
+					<div id="exchange_index_div" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<table id="exchange_index_table" class="display table table-striped table-bordered table-hover dataTable no-footer">
+							<thead>
+								<tr>
+									<th>选择</th>
+									<th>游戏</th>
+									<th>道具</th>
+									<th>手机号码</th>
+									<th>姓名</th>
+									<th>身份信息</th>
+									<th>uid</th>
+									<th>联系地址</th>
+									<th>提交时间</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var editor;
+	$(document).ready(function() {
+		editor = new $.fn.dataTable.Editor( {
+			ajax: "<!--{sroot}-->index.php/customer/exchange/chgStatus",
+	        table: "#exchange_index_table",
+	        i18n: {
+	        	 remove:{
+	 	        	button: "兑换处理",
+	 	        	title:  "兑换处理",
+	 	        	submit: "确认处理",
+ 	        	  	confirm: {
+	 	                _: "这%d条兑换记录确认已经处理完毕了吗?",
+	 	                1: "该兑换记录确认已经处理完毕了吗?",
+ 	                }
+	 	         },
+	 	         error:{
+	 	        	 system: "处理失败,请联系程序员哥哥!"
+	 	         }
+			
+	        },
+	        fields: [{
+                label: "gname:",
+                name: "gname"
+            }, {
+                label: "pname:",
+                name: "pname"
+            }, {
+                label: "phone:",
+                name: "phone"
+            }, {
+                label: "name:",
+                name: "name"
+            }, {
+                label: "identity_card:",
+                name: "identity_card",
+            }, {
+                label: "guid:",
+                name: "guid"
+            }, {
+                label: "adress:",
+                name: "adress"
+            }, {
+                label: "wtime:",
+                name: "wtime"
+            }
+        ]
+	    } );
+		
+		$('#exchange_index_table').DataTable({
+			dom: "Bfrtip",
+			ajax : '<!--{sroot}-->index.php/customer/exchange/getData',
+			"order":[[0, "desc"]],
+			columns : [ 
+			{
+			    data: null,
+			    defaultContent: '',
+			    className: 'select-checkbox',
+			    orderable: false
+			},{
+				data : "gname",
+				defaultContent : 'NULL',
+			}, {
+				data : "pname",
+				defaultContent : 'NULL',
+			}, {
+				data : "phone",
+				defaultContent : 'NULL',
+			}, {
+				data : "name",
+				defaultContent : 'NULL',
+			}, {
+				data : "identity_card",
+				defaultContent : 'NULL',
+			}, {
+				data : "guid",
+				defaultContent : 'NULL',
+			}, {
+				data : "adress",
+				defaultContent : 'NULL',
+			},{
+				data : "wtime",
+				defaultContent : 'NULL',
+			},],
+			
+			language:{
+	                "lengthMenu": "_MENU_ 条记录每页",
+	                "zeroRecords": "没有找到记录",
+	                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+	                "infoEmpty": "无记录",
+	                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+	                "paginate": {
+	                    "previous": "上一页",
+	                    "next": "下一页"
+	                }
+	        },
+	        
+	        select: {
+	            style:    'os',
+	            selector: 'td:first-child'
+	        },
+	        buttons: [
+	                  { extend: "remove", editor: editor}
+	     	],
+		});
+	});
+</script>
