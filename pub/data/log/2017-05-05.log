@@ -1,0 +1,22 @@
+[TIME:2017-05-05 20:07:16] --- [url:{http://mge.91.com:80/index.php/customer/userInfo/ajaxData}] --- [data:{array(
+'post'=>
+array(
+'req'=>
+array(
+'userkey'=>'2014139',
+'usertype'=>'uid',
+),
+),
+'post_input'=>'req%5Buserkey%5D=2014139&req%5Busertype%5D=uid',
+)}] --- [ret:{'config conn failed, please check the config(/conf/conf.php)'}]
+[TIME:2017-05-05 20:07:37] --- [url:{http://mge.91.com:80/index.php/customer/userInfo/ajaxData}] --- [data:{array(
+'post'=>
+array(
+'req'=>
+array(
+'userkey'=>'2014139',
+'usertype'=>'uid',
+),
+),
+'post_input'=>'req%5Buserkey%5D=2014139&req%5Busertype%5D=uid',
+)}] --- [ret:{'config conn failed, please check the config(/conf/conf.php)'}]
